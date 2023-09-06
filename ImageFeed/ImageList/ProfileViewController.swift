@@ -28,7 +28,7 @@ final class ProfileViewController: UIViewController {
         labelName.translatesAutoresizingMaskIntoConstraints = false
         labelName.text = "Екатерина Новикова"
         labelName.textColor = .white
-        labelName.font = UIFont.systemFont(ofSize: 23)
+        labelName.font = UIFont.boldSystemFont(ofSize: 23)
         view.addSubview(labelName)
         labelName.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
         labelName.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
@@ -59,7 +59,7 @@ final class ProfileViewController: UIViewController {
             target: self,
             action: #selector(Self.didTapButton)
         )
-        button.tintColor = .red
+        button.tintColor = UIColor(named: "YP Red (iOS)")
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
         button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
