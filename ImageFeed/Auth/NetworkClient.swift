@@ -78,6 +78,7 @@ final class OAuth2Service {
 extension URLSession {
     func data(for request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionTask {
         let successfulCompletion: (Result<Data, Error>) -> Void = { result in
+            //Максим, я же тут оборачиваю в главный поток блок complition. Разве мне нужно вызывать его сверху
             DispatchQueue.main.async {
                 completion(result)
             }
