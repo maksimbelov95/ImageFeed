@@ -18,7 +18,7 @@ struct OAuthTokenResponseBody: Decodable {
 }
 
 final class OAuth2Service {
-    let DefaultBaseURL = URL(string: "https://unsplash.com")!
+    let defaultBaseURL = URL(string: "https://unsplash.com")!
     static let shared = OAuth2Service()
     private let urlSession = URLSession.shared
     private (set) var authToken: String? {
@@ -44,14 +44,14 @@ final class OAuth2Service {
     
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         let URLString: String = "/oauth/token" +
-            "?client_id=\(AccessKey)" +
-            "&client_secret=\(SecretKey)" +
-            "&redirect_uri=\(RedirectURI)" +
+            "?client_id=\(accessKey)" +
+            "&client_secret=\(secretKey)" +
+            "&redirect_uri=\(redirectURI)" +
             "&code=\(code)" +
             "&grant_type=authorization_code"
         
         var requestURL: URL {
-            guard let requestURL = URL(string: URLString, relativeTo: DefaultBaseURL) else {
+            guard let requestURL = URL(string: URLString, relativeTo: defaultBaseURL) else {
                 preconditionFailure("Failed to build URL")
             }
             return requestURL
@@ -78,7 +78,7 @@ final class OAuth2Service {
 extension URLSession {
     func data(for request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionTask {
         let successfulCompletion: (Result<Data, Error>) -> Void = { result in
-            //Максим, я же тут оборачиваю в главный поток блок complition. Разве мне нужно вызывать его сверху
+            //Максим, я же тут вызываю в главном потоке блок complition!?
             DispatchQueue.main.async {
                 completion(result)
             }
