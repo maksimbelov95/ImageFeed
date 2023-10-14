@@ -13,14 +13,14 @@ final class SplashViewController: UIViewController {
     
     private let backgroundImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = Images.authorizationLogo
+//        imageView.image = Images.authorizationLogo
         return imageView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         alertPresenter.delegate = self
-        view.backgroundColor = Colors.logoViewBGColor
+//        view.backgroundColor = Colors.logoViewBGColor
         
         layout()
     }
