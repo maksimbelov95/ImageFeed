@@ -31,6 +31,7 @@ final class ProfileService {
                 let profile = Profile(result: profileResult)
                 self?.profile = profile
                 completion(.success(profile))
+                ProfileImageService.shared.fetchProfileImageURL(userName: profile.username) { _ in }
             case .failure(let error):
                 completion(.failure(error))
             }
