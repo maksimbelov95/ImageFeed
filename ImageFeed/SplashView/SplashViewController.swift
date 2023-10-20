@@ -7,26 +7,19 @@ final class SplashViewController: UIViewController {
     private let profileImageService = ProfileImageService.shared
     private let authService = OAuth2Service()
     private let alertPresenter = AlertPresenter()
-    private var wasChecked: Bool = false
-    
-    private let showLoginFlowSegueIdentifier = "ShowLoginFlow"
     
     private let backgroundImage: UIImageView = {
         let imageView = UIImageView()
-//        imageView.image = Images.authorizationLogo
         return imageView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         alertPresenter.delegate = self
-//        view.backgroundColor = Colors.logoViewBGColor
-        
         layout()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         checkAuthStatus()
     }
     
@@ -45,8 +38,7 @@ final class SplashViewController: UIViewController {
         ])
     }
     private func checkAuthStatus(){
-        guard !wasChecked else {return}
-        wasChecked = true
+        guard UIBlockingProgressHUD.isShowing == false else { return }
         if authService.isAuthenticated {
             UIBlockingProgressHUD.show()
             fetchProfile {[weak self] in
@@ -93,7 +85,11 @@ extension SplashViewController: AuthViewControllerDelegate{
             case .success(_):
                 self?.fetchProfile(completion:{UIBlockingProgressHUD.dismiss()})
             case .failure(let error):
-                self?.showLoginAlert(error: error)
+                self?.alertPresenter.showAlert(title:"Что-то пошло не так",
+                                               message:"Не удалось войти в систему, \(error.localizedDescription)"){[weak self] in
+                          guard let self = self else {return}
+                    self.fetchOAuthToken(code)
+                      }
                 UIBlockingProgressHUD.dismiss()
             }
         }
@@ -104,17 +100,15 @@ extension SplashViewController: AuthViewControllerDelegate{
             case .success(_):
                 self?.switchToTabBarController()
             case .failure(let error):
-                self?.showLoginAlert(error: error)
-            }
+                self?.alertPresenter.showAlert(title:"Что-то пошло не так",
+                                               message:"Не удалось войти в систему, \(error.localizedDescription)"){[weak self] in
+                    guard let self = self else {return}
+                    self.fetchProfile{ [weak self]  in}
+                }}
             completion()
         }
     }
-    private func showLoginAlert(error: Error){
-        alertPresenter.showAlert(title:"Что-то пошло не так",
-                                 message:"Не удалось войти в систему, \(error.localizedDescription)"){
-                self.performSegue(withIdentifier: self.showLoginFlowSegueIdentifier, sender: nil)
-            }
-    }
+    
     private func presentAuth(){
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         let viewController = storyboard.instantiateViewController(withIdentifier: "AuthViewControllerID")

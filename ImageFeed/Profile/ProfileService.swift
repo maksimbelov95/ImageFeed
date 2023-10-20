@@ -11,7 +11,7 @@ final class ProfileService {
     private var currentTask: URLSessionTask?
     
     
-    init(builder: URLRequestBuilder = .shared) {
+    private init(builder: URLRequestBuilder = .shared) {
         self.builder = builder
     }
     

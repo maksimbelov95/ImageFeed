@@ -12,6 +12,6 @@ final class AlertPresenter {
             handler()
         }
         alert.addAction(alertAction)
-        delegate?.present(alert, animated: true)
+        delegate?.present(alert, animated: true, completion: nil)
     }
 }

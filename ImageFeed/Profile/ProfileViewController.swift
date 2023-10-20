@@ -33,12 +33,10 @@ final class ProfileViewController: UIViewController {
             updateAvatar(url: url)
         }
         
-       
-    
-        
-
         view.addSubview(imageView)
         imageView.tintColor = .gray
+        imageView.layer.cornerRadius = 35
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
@@ -83,25 +81,8 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapButton() {
-        //        profileImage = UIImage(named: "profile_out_image")
-        //        let imageView = UIImageView(image: profileImage)
-        //        imageView.tintColor = .gray
-        //        imageView.translatesAutoresizingMaskIntoConstraints = false
-        //        view.addSubview(imageView)
-        //        imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        //        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
-        //        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        //        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        //
-        //
-        //
-        //        for view in view.subviews {
-        //            if view is UILabel {
-        //                view.removeFromSuperview()
-        //            }
-        //        }
-        //    }
     }
+    
     private func updateAvatar(url: URL){
         imageView.kf.setImage(with: url)
         print(url)
