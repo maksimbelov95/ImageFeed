@@ -2,7 +2,7 @@ import UIKit
 import Kingfisher
 
 final class SingleImageViewController: UIViewController {
-    var photo: PhotoResult?
+    var photo: Photo?
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet private var imageView: UIImageView!
@@ -30,7 +30,7 @@ final class SingleImageViewController: UIViewController {
     }
     
     private func loadAndDisplayImage() {
-        guard let imageURLString = photo?.urls.full, let imageURL = URL(string: imageURLString) else {
+        guard let imageURLString = photo?.largeImageURL, let imageURL = URL(string: imageURLString) else {
                return
            }
            

@@ -14,7 +14,7 @@ final class ImagesListViewController: UIViewController, ImageListCellDelegate {
     private var imageListServiceObserver: NSObjectProtocol?
 
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
-    var photos: [PhotoResult] = []
+    var photos: [Photo] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +64,7 @@ extension ImagesListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath) as! ImagesListCell
         cell.delegate = self
         cell.dateLabel.text = dateFormatter.string(from: Date())
-        let imageURL = URL(string: photos[indexPath.row].urls.thumb)
+        let imageURL = URL(string: photos[indexPath.row].thumbImageURL)
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(
             with: imageURL,
