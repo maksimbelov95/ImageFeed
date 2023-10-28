@@ -1,14 +1,9 @@
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
-    var image: UIImage! {
-        didSet {
-            guard isViewLoaded else { return }
-            imageView.image = image
-            rescaleAndCenterImageInScrollView(image: image)
-        }
-    }
-    
+    var photo: PhotoResult?
+
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet private var imageView: UIImageView!
 
@@ -16,8 +11,7 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
-        imageView.image = image
-        rescaleAndCenterImageInScrollView(image: image)
+        loadAndDisplayImage()
     }
 
     @IBAction private func didTapBackButton() {
@@ -25,12 +19,41 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBAction func didTapShareButton(_ sender: UIButton) {
-        let share = UIActivityViewController(
-            activityItems: [image],
-            applicationActivities: nil
-        )
-        present(share, animated: true, completion: nil)
+        if let imageToShare = imageView.image {
+                    let sharingImage = UIActivityViewController(activityItems: [imageToShare], applicationActivities: nil)
+                    present(sharingImage, animated: true)
+                } else {
+                    let alertController = UIAlertController(title: "Ошибка", message: "Произошла ошибка, повторите попозже", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    present(alertController, animated: true, completion: nil)
+                }
     }
+    
+    private func loadAndDisplayImage() {
+        guard let imageURLString = photo?.urls.full, let imageURL = URL(string: imageURLString) else {
+               return
+           }
+           
+           UIBlockingProgressHUD.show()
+           
+           imageView.kf.indicatorType = .activity
+           imageView.kf.setImage(with: imageURL, placeholder: nil, completionHandler: { [weak self] (result) in
+               switch result {
+               case .success(_):
+                   UIBlockingProgressHUD.dismiss()
+                   self?.rescaleAndCenterImageInScrollView(image: (self?.imageView.image)!)
+               case .failure(_):
+                   UIBlockingProgressHUD.dismiss()
+                   let alert = UIAlertController(title: "Ошибка", message: "Что-то пошло не так. Попробовать ещё раз?", preferredStyle: .alert)
+                   alert.addAction(UIAlertAction(title: "Не надо", style: .cancel, handler: nil))
+                   alert.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { (_) in
+                       self?.loadAndDisplayImage()
+                   }))
+                   
+                   self?.present(alert, animated: true, completion: nil)
+               }
+           })
+       }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
