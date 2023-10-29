@@ -11,7 +11,6 @@ final class ImagesListViewController: UIViewController, ImageListCellDelegate {
     private let imageListServise = ImageListService()
     private var imageListServiceObserver: NSObjectProtocol?
 
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     private var photos: [Photo] = []
 
     override func viewDidLoad() {
@@ -94,14 +93,12 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return 0
-        }
+
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
-        let imageWidth = image.size.width
+        let imageWidth = photos[indexPath.row].size.width
         let scale = imageViewWidth / imageWidth
-        let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
+        let cellHeight = photos[indexPath.row].size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
     }
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -111,7 +108,7 @@ extension ImagesListViewController: UITableViewDelegate {
                     DispatchQueue.main.async {
                         guard let self else {return}
                         self.photos.append(contentsOf: result)
-                        self.tableView.reloadData()
+                        self.updateTableViewAnimated()
                     }
                 }
             }
