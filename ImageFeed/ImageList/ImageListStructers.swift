@@ -8,7 +8,7 @@ struct Photo {
     let welcomeDescription: String?
     let thumbImageURL: String
     let largeImageURL: String
-    let isLiked: Bool
+    var isLiked: Bool
 }
 extension Photo{
     init(result photo: PhotoResult){
@@ -23,7 +23,6 @@ extension Photo{
         )
     }
 }
-
 struct PhotoResult: Codable {
     let id: String
     let width: Int

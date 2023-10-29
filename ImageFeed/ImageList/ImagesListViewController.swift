@@ -1,11 +1,9 @@
 import UIKit
 import Kingfisher
+import ProgressHUD
 
 final class ImagesListViewController: UIViewController, ImageListCellDelegate {
-    func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        
-    }
-    
+
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
 
     @IBOutlet private var tableView: UITableView!
@@ -14,7 +12,7 @@ final class ImagesListViewController: UIViewController, ImageListCellDelegate {
     private var imageListServiceObserver: NSObjectProtocol?
 
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
-    var photos: [Photo] = []
+    private var photos: [Photo] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +51,7 @@ final class ImagesListViewController: UIViewController, ImageListCellDelegate {
         formatter.timeStyle = .none
         return formatter
     }()
+    
 }
 
 extension ImagesListViewController: UITableViewDataSource {
@@ -106,9 +105,8 @@ extension ImagesListViewController: UITableViewDelegate {
         return cellHeight
     }
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print(indexPath.row)
-        print(photos.count)
             if indexPath.row == photos.count - 1 {
+                print("условие выполнено, вызываю fetchPhotosNextPage")
                 imageListServise.fetchPhotosNextPage{[weak self] result in
                     DispatchQueue.main.async {
                         guard let self else {return}
@@ -118,4 +116,31 @@ extension ImagesListViewController: UITableViewDelegate {
                 }
             }
         }
+}
+extension ImagesListViewController{
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else {return}
+         var photo = photos[indexPath.row]
+         
+  
+         photos[indexPath.row] = photo
+         
+        imageListServise.changeLike(photoId: photo.id, isLike: photo.isLiked) { [weak self] result in
+             guard let self = self else { return }
+             
+             switch result {
+             case .success:
+                 DispatchQueue.main.async {
+                     self.tableView.reloadRows(at: [indexPath], with: .none)
+                     UIBlockingProgressHUD.dismiss()
+                 }
+                 
+             case .failure(let error):
+                 DispatchQueue.main.async {
+                     UIBlockingProgressHUD.dismiss()
+                     print(error)
+                 }
+             }
+         }
+     }
 }

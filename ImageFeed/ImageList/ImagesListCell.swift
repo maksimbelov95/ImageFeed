@@ -1,3 +1,4 @@
+import Foundation
 import UIKit
 import Kingfisher
 
@@ -6,18 +7,21 @@ protocol ImageListCellDelegate: AnyObject {
 }
 
 final class ImagesListCell: UITableViewCell {
-    override func prepareForReuse() {
-           super.prepareForReuse()
-           
-           cellImage.kf.cancelDownloadTask()
-       }
+    
     static let reuseIdentifier = "ImagesListCell"
     weak var delegate: ImageListCellDelegate?
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        cellImage.kf.cancelDownloadTask()
+    }
+    
     @IBOutlet var cellImage: UIImageView!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var dateLabel: UILabel!
     
-    
-    
+    @IBAction func likeButtonTapped(_ sender: Any) {
+        delegate?.imageListCellDidTapLike(self)
+    }
 }
-
