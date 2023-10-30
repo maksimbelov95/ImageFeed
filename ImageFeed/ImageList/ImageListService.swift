@@ -8,12 +8,6 @@ final class ImageListService{
     private var currentPage: Int = 0
     private var lastLoadedPage: Int = 1
     private var currentTask: URLSessionTask?
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
     func fetchPhotosNextPage(completion: @escaping([Photo]) -> Void){
         guard let request = makePhotosNextPage() else {
             assertionFailure("Invalid request")
@@ -38,8 +32,8 @@ final class ImageListService{
                         let photo = Photo(
                             id: item.id,
                             size: CGSize(width: item.width, height: item.height),
-                            createdAt: item.createdAt,
-                            welcomeDescription: item.description ?? "",
+                            createdAt: self.dateFormatterString(item.createdAt),
+                            welcomeDescription: item.description,
                             thumbImageURL: item.urls.thumb,
                             largeImageURL: item.urls.full,
                             isLiked: item.likedByUser)
@@ -115,6 +109,7 @@ final class ImageListService{
                 }
             } else {completion(.failure(NetworkError.urlSessionError))}
         }
+        task.resume()
     }
         
     func makeChangeLikeRequest(isLike: Bool, photoId: String) -> URLRequest? {
@@ -142,5 +137,9 @@ final class ImageListService{
         }
         return request
     }
-}
+    private func dateFormatterString(_ createdAt: String) -> Date?{
+        let dateFormatter = ISO8601DateFormatter()
+        return dateFormatter.date(from: createdAt)
+        }
+    }
 

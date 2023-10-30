@@ -12,6 +12,12 @@ final class ImagesListViewController: UIViewController, ImageListCellDelegate {
     private var imageListServiceObserver: NSObjectProtocol?
 
     private var photos: [Photo] = []
+    
+    private lazy var dateFormatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd MMMM yyyy"
+            return formatter
+        }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,14 +49,6 @@ final class ImagesListViewController: UIViewController, ImageListCellDelegate {
             super.prepare(for: segue, sender: sender)
         }
     }
-
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
-    
 }
 
 extension ImagesListViewController: UITableViewDataSource {
@@ -61,7 +59,8 @@ extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath) as! ImagesListCell
         cell.delegate = self
-        cell.dateLabel.text = dateFormatter.string(from: Date())
+        cell.dateLabel.text = self.dateFormatter.string(from: photos[indexPath.row].createdAt ?? Date())
+
         let imageURL = URL(string: photos[indexPath.row].thumbImageURL)
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(
@@ -117,23 +116,19 @@ extension ImagesListViewController{
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else {return}
         let photo = photos[indexPath.row]
-         photos[indexPath.row] = photo
-        imageListServise.changeLike(photoId: photo.id, isLike: photo.isLiked) { [weak self] result in
-             guard let self = self else { return }
-             
-             switch result {
-             case .success:
-                 DispatchQueue.main.async {
-                     self.tableView.reloadRows(at: [indexPath], with: .none)
-                     UIBlockingProgressHUD.dismiss()
-                 }
-                 
-             case .failure(let error):
-                 DispatchQueue.main.async {
-                     UIBlockingProgressHUD.dismiss()
-                     print(error)
-                 }
-             }
-         }
-     }
+        let isLiked = photo.isLiked
+        imageListServise.changeLike(photoId: photo.id, isLike: !isLiked) { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self.tableView.reloadRows(at: [indexPath], with: .none)
+                    UIBlockingProgressHUD.dismiss()
+                case .failure(let error):
+                    print(error)
+                    UIBlockingProgressHUD.dismiss()
+                }
+            }
+        }
+    }
 }

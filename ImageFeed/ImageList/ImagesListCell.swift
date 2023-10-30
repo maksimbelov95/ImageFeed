@@ -24,4 +24,8 @@ final class ImagesListCell: UITableViewCell {
     @IBAction func likeButtonTapped(_ sender: Any) {
         delegate?.imageListCellDidTapLike(self)
     }
+    func setIsLike(_ isLike: Bool) {
+            let isLikeImage = isLike ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
+            likeButton.setImage(isLikeImage, for: .normal)
+        }
 }
