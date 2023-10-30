@@ -82,6 +82,7 @@ final class ImageListService{
             assertionFailure("Invalid request")
             return
         }
+        print("Распечатываю текущий url запрос на смену лайка \(request)")
         let session = URLSession.shared
         let task = session.dataTask(with: request) { [weak self] (data, response, error) in
             guard let self = self else { return }

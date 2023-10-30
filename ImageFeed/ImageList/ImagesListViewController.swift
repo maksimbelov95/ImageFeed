@@ -93,7 +93,6 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
         let imageWidth = photos[indexPath.row].size.width
@@ -117,11 +116,8 @@ extension ImagesListViewController: UITableViewDelegate {
 extension ImagesListViewController{
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else {return}
-         var photo = photos[indexPath.row]
-         
-  
+        let photo = photos[indexPath.row]
          photos[indexPath.row] = photo
-         
         imageListServise.changeLike(photoId: photo.id, isLike: photo.isLiked) { [weak self] result in
              guard let self = self else { return }
              

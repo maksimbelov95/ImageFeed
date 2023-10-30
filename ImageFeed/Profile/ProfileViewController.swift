@@ -1,4 +1,6 @@
 import UIKit
+import WebKit
+import SwiftKeychainWrapper
 import Foundation
 import Kingfisher
 
@@ -10,6 +12,7 @@ final class ProfileViewController: UIViewController {
     private let labelMail = UILabel()
     private let labelBio = UILabel()
     private var imageView = UIImageView()
+    private let splashViewController = SplashViewController()
     private var profileImageServiceObserver: NSObjectProtocol?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,7 +84,17 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapButton() {
-    }
+                guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+                window.rootViewController = splashViewController
+                KeychainWrapper.standard.removeAllKeys()
+                HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+                WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+                records.forEach { record in
+                                   WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+                               }
+                           }
+                window.rootViewController = splashViewController
+                }
     
     private func updateAvatar(url: URL){
         imageView.kf.setImage(with: url)
