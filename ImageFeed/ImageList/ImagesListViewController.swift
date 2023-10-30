@@ -60,7 +60,10 @@ extension ImagesListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath) as! ImagesListCell
         cell.delegate = self
         cell.dateLabel.text = self.dateFormatter.string(from: photos[indexPath.row].createdAt ?? Date())
-
+        
+        let isLikeButtonImage = photos[indexPath.row].isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
+        cell.likeButton.setImage(isLikeButtonImage, for: .normal)
+        
         let imageURL = URL(string: photos[indexPath.row].thumbImageURL)
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(
