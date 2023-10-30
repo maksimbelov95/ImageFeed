@@ -1646,7 +1646,7 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "98A72482-8260-41F6-B4D7-9DFCE5BCAB36 - 67f1990944cecdd9"
+                  uuid = "98A72482-8260-41F6-B4D7-9DFCE5BCAB36 - 67f1990944cecc17"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -1656,12 +1656,12 @@
                   urlString = "file:///Users/maksimbelov/Desktop/%D0%9E%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%20SWIFT/%D0%AF%D0%BD%D0%B4%D0%B5%D0%BA%D1%81%20%D0%BF%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%BA%D1%83%D0%BC/Image_Feed_sprint_12/ImageFeed/ImageFeed/ImageList/ImagesListViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "106"
-                  endingLineNumber = "106"
-                  offsetFromSymbolStart = "528">
+                  startingLineNumber = "108"
+                  endingLineNumber = "108"
+                  offsetFromSymbolStart = "544">
                </Location>
                <Location
-                  uuid = "98A72482-8260-41F6-B4D7-9DFCE5BCAB36 - 785f0f8ab0be4d61"
+                  uuid = "98A72482-8260-41F6-B4D7-9DFCE5BCAB36 - 785f0f8ab0be4caf"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -1671,12 +1671,12 @@
                   urlString = "file:///Users/maksimbelov/Desktop/%D0%9E%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%20SWIFT/%D0%AF%D0%BD%D0%B4%D0%B5%D0%BA%D1%81%20%D0%BF%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%BA%D1%83%D0%BC/Image_Feed_sprint_12/ImageFeed/ImageFeed/ImageList/ImagesListViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "106"
-                  endingLineNumber = "106"
+                  startingLineNumber = "108"
+                  endingLineNumber = "108"
                   offsetFromSymbolStart = "164">
                </Location>
                <Location
-                  uuid = "98A72482-8260-41F6-B4D7-9DFCE5BCAB36 - aa6a1c76bd255205"
+                  uuid = "98A72482-8260-41F6-B4D7-9DFCE5BCAB36 - aa6a1c76bd2553cb"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -1686,8 +1686,8 @@
                   urlString = "file:///Users/maksimbelov/Desktop/%D0%9E%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5%20SWIFT/%D0%AF%D0%BD%D0%B4%D0%B5%D0%BA%D1%81%20%D0%BF%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%BA%D1%83%D0%BC/Image_Feed_sprint_12/ImageFeed/ImageFeed/ImageList/ImagesListViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "106"
-                  endingLineNumber = "106"
+                  startingLineNumber = "108"
+                  endingLineNumber = "108"
                   offsetFromSymbolStart = "32">
                </Location>
             </Locations>
