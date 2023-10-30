@@ -85,7 +85,6 @@ final class ProfileViewController: UIViewController {
     @objc
     private func didTapButton() {
                 guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-                window.rootViewController = splashViewController
                 KeychainWrapper.standard.removeAllKeys()
                 HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
                 WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
