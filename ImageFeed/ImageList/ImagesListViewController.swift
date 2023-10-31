@@ -10,6 +10,7 @@ final class ImagesListViewController: UIViewController, ImageListCellDelegate {
     
     private let imageListServise = ImageListService()
     private var imageListServiceObserver: NSObjectProtocol?
+    private let alertPresenter = AlertPresenter()
 
     private var photos: [Photo] = []
     
@@ -104,7 +105,6 @@ extension ImagesListViewController: UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
             if indexPath.row == photos.count - 1 {
-                print("условие выполнено, вызываю fetchPhotosNextPage")
                 imageListServise.fetchPhotosNextPage{[weak self] result in
                     DispatchQueue.main.async {
                         guard let self else {return}
@@ -117,20 +117,24 @@ extension ImagesListViewController: UITableViewDelegate {
 }
 extension ImagesListViewController{
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else {return}
-        let photo = photos[indexPath.row]
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+              let photo = photos[indexPath.row]
         let isLiked = photo.isLiked
         imageListServise.changeLike(photoId: photo.id, isLike: !isLiked) { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self.tableView.reloadRows(at: [indexPath], with: .none)
+                    self.photos = self.imageListServise.photos
+                    let isLikeButtonImage = self.photos[indexPath.row].isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
+                    cell.likeButton.setImage(isLikeButtonImage, for: .normal)
                     UIBlockingProgressHUD.dismiss()
                 case .failure(let error):
-                    print(error)
-                    UIBlockingProgressHUD.dismiss()
+                    self.alertPresenter.showAlert(title:"Что-то пошло не так",
+                                                  message:"Не удалось войти в систему попробуйте позже, \(error.localizedDescription)"){
+                    }
                 }
+                    UIBlockingProgressHUD.dismiss()
             }
         }
     }

@@ -14,10 +14,7 @@ final class ImageListService{
             return
         }
         if currentTask == nil{
-            
             let session = URLSession.shared
-            print("распечатываю номер последней загруженной страницы \(lastLoadedPage)")
-            print("Распечатываю текущий url запрос \(request)")
             currentTask = session.dataTask(with: request) { [weak self] (data, response, error) in
                 guard let self = self else { return }
                 if let error = error{
@@ -76,7 +73,6 @@ final class ImageListService{
             assertionFailure("Invalid request")
             return
         }
-        print("Распечатываю текущий url запрос на смену лайка \(request)")
         let session = URLSession.shared
         let task = session.dataTask(with: request) { [weak self] (data, response, error) in
             guard let self = self else { return }
@@ -86,11 +82,8 @@ final class ImageListService{
             } 
             if let response = response, let statusCode = (response as? HTTPURLResponse)?.statusCode {
                 if 200 ..< 300 ~= statusCode {
-                    // Поиск индекса элемента
                     if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
-                        // Текущий элемент
                         let photo = self.photos[index]
-                        // Копия элемента с инвертированным значением isLiked.
                         let newPhoto = Photo(
                             id: photo.id,
                             size: photo.size,
@@ -98,7 +91,7 @@ final class ImageListService{
                             welcomeDescription: photo.welcomeDescription,
                             thumbImageURL: photo.thumbImageURL,
                             largeImageURL: photo.largeImageURL,
-                            isLiked: photo.isLiked
+                            isLiked: !photo.isLiked
                         )
                         // Заменяем элемент в массиве.
                         self.photos[index] = newPhoto
