@@ -4,16 +4,20 @@ import ProgressHUD
 
 final class ImageListService{
     static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    
     private (set) var photos: [Photo] = []
+    
     private var currentPage: Int = 0
     private var lastLoadedPage: Int = 1
     private var currentTask: URLSessionTask?
+    let dateFormatter = ISO8601DateFormatter()
+    
     func fetchPhotosNextPage(completion: @escaping([Photo]) -> Void){
         guard let request = makePhotosNextPage() else {
             assertionFailure("Invalid request")
             return
         }
-        if currentTask == nil{
+        if currentTask != nil { return } 
             let session = URLSession.shared
             currentTask = session.dataTask(with: request) { [weak self] (data, response, error) in
                 guard let self = self else { return }
@@ -29,7 +33,7 @@ final class ImageListService{
                         let photo = Photo(
                             id: item.id,
                             size: CGSize(width: item.width, height: item.height),
-                            createdAt: self.dateFormatterString(item.createdAt),
+                            createdAt: self.dateFormatterString(dateFormatter: self.dateFormatter,item.createdAt),
                             welcomeDescription: item.description,
                             thumbImageURL: item.urls.thumb,
                             largeImageURL: item.urls.full,
@@ -45,7 +49,7 @@ final class ImageListService{
                 }
             }
             currentTask?.resume()
-        }else {return}
+        
     }
     func makePhotosNextPage() -> URLRequest? {
         var nextPage:Int
@@ -130,8 +134,7 @@ final class ImageListService{
         }
         return request
     }
-    private func dateFormatterString(_ createdAt: String) -> Date?{
-        let dateFormatter = ISO8601DateFormatter()
+    private func dateFormatterString(dateFormatter: ISO8601DateFormatter,_ createdAt: String) -> Date?{
         return dateFormatter.date(from: createdAt)
         }
     }

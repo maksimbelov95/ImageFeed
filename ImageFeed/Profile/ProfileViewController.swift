@@ -83,17 +83,30 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc
-    private func didTapButton() {
-                guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-                KeychainWrapper.standard.removeAllKeys()
-                HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-                WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-                records.forEach { record in
-                                   WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-                               }
+    private func didTapButton()  {
+        let alert = UIAlertController(title: "Пока, пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
+        alert.view.accessibilityIdentifier = "bye_bye"
+        let yesAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+            KeychainWrapper.standard.removeAllKeys()
+            HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+            WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                               WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
                            }
-                window.rootViewController = splashViewController
-                }
+                       }
+            window.rootViewController = self.splashViewController
+        }
+        yesAction.accessibilityIdentifier = "logout_yes"
+        
+        let noAction = UIAlertAction(title: "Нет", style: .cancel)
+        
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
     
     private func updateAvatar(url: URL){
         imageView.kf.setImage(with: url)

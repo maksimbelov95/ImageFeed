@@ -51,7 +51,6 @@ extension URLSession{
             }
             let session = URLSession.shared
             let task = session.dataTask(with: request, completionHandler: {data, response, error in
-                print(request)
                 if let data = data, let response = response, let statusCode = (response as?
                                                                                HTTPURLResponse)?.statusCode {
                     if 200 ..< 300 ~= statusCode {
