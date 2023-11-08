@@ -53,6 +53,8 @@ final class ImageListService{
     }
     func makePhotosNextPage() -> URLRequest? {
         var nextPage:Int
+        let photoBaseURLString = AuthConfiguration.standard.photoBaseURLString
+        let accessKey = AuthConfiguration.standard.accessKey
         if lastLoadedPage == 1{
             nextPage = 1
         } else {
@@ -61,12 +63,12 @@ final class ImageListService{
         print(nextPage)
         print(lastLoadedPage)
         return makeHTTPRequest(
-            path: "\(Constants.photoBaseURLString)"
-            + "?client_id=\(Constants.accessKey)"
+            path: "\(photoBaseURLString)"
+            + "?client_id=\(accessKey)"
             + "&page=\(nextPage)"
             + "&per_page=10",
             httpMethod: "GET",
-            baseURLString: Constants.photoBaseURLString)
+            baseURLString: photoBaseURLString)
     }
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void){
@@ -116,7 +118,7 @@ final class ImageListService{
                 + "/\(photoId)"
                 + "/like",
                 httpMethod: httpMethod,
-                baseURLString: Constants.defaultApiBaseURLString)
+                baseURLString: AuthConfiguration.standard.defaultApiBaseURLString)
         }
     func makeHTTPRequest(
         path: String,
