@@ -5,6 +5,7 @@ import Foundation
 import Kingfisher
 
 final class ProfileViewController: UIViewController {
+    
 
     @IBAction private func didTapLogoutButton() {}
     private let profileImageService = ProfileImageService.shared
