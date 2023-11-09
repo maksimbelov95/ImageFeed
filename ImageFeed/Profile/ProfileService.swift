@@ -41,7 +41,7 @@ final class ProfileService {
         builder.makeHTTPRequest(
             path: "/me",
             httpMethod: "GET",
-            baseURLString:  AuthConfiguration.standard.defaultBaseURL)
+            baseURLString:  AuthConfiguration.standard.defaultApiBaseURLString)
     }
 
 }

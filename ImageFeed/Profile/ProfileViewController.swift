@@ -76,6 +76,7 @@ final class ProfileViewController: UIViewController {
             target: self,
             action: #selector(Self.didTapButton)
         )
+        button.accessibilityIdentifier = "logout button"
         button.tintColor = UIColor(named: "YP Red (iOS)")
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)

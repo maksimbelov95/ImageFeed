@@ -48,7 +48,7 @@ extension OAuth2Service{
         let accessKey = AuthConfiguration.standard.accessKey
         let secretKey = AuthConfiguration.standard.secretKey
         let redirectURI = AuthConfiguration.standard.redirectURI
-        let defaultApiBaseURLString = AuthConfiguration.standard.defaultApiBaseURLString
+        let defaultBaseURL = AuthConfiguration.standard.defaultBaseURL
         
         return builder.makeHTTPRequest(
             path: "\(baseAuthTokenPath)"
@@ -58,7 +58,7 @@ extension OAuth2Service{
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
-            baseURLString: defaultApiBaseURLString
+            baseURLString: defaultBaseURL
         )
     }
 }

@@ -1,14 +1,14 @@
 import Foundation
 
-let AccessKey = "your_Access_Key"
-let SecretKey = "your_Secret_Key"
-let RedirectURI = "your_Redirect_URI"
+let AccessKey = "UZ45hIGtRsVO2y0XXnBx_pB8PGhp4fGvHLt6cxeL3BM"
+let SecretKey = "szSRnbtDHe3fGcLkdgB3tmkqEprP9RhQ5naONjuGVvk"
+let RedirectURI = "urn:ietf:wg:oauth:2.0:oob"
 let AccessScope = "public+read_user+write_likes"
 
-let DefaultBaseURL = "https://api.unsplash.com"
+let BaseURLString = "https://unsplash.com"
 let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-let PhotoBaseURLString = "https://api.unsplash.com/photos"
 let DefaultApiBaseURLString = "https://api.unsplash.com"
+let PhotoBaseURLString = "https://api.unsplash.com/photos"
 let BaseAuthTokenPath = "/oauth/token"
 
 let BearerToken = "bearerToken"
@@ -45,7 +45,7 @@ struct AuthConfiguration {
                                  redirectURI: RedirectURI,
                                  accessScope: AccessScope,
                                  authURLString: UnsplashAuthorizeURLString,
-                                 defaultBaseURL: DefaultBaseURL,
+                                 defaultBaseURL: BaseURLString,
                                  photoBaseURLString: PhotoBaseURLString,
                                  defaultApiBaseURLString: DefaultApiBaseURLString,
                                  baseAuthTokenPath: BaseAuthTokenPath,
