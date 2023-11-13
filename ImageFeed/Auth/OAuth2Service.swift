@@ -44,15 +44,21 @@ final class OAuth2Service {
 
 extension OAuth2Service{
     private func authTokenRequest(code: String) -> URLRequest?{
-        builder.makeHTTPRequest(
-            path: "\(Constants.baseAuthTokenPath)"
-            + "?client_id=\(Constants.accessKey)"
-            + "&&client_secret=\(Constants.secretKey)"
-            + "&&redirect_uri=\(Constants.redirectURI)"
+        let baseAuthTokenPath = AuthConfiguration.standard.baseAuthTokenPath
+        let accessKey = AuthConfiguration.standard.accessKey
+        let secretKey = AuthConfiguration.standard.secretKey
+        let redirectURI = AuthConfiguration.standard.redirectURI
+        let defaultBaseURL = AuthConfiguration.standard.defaultBaseURL
+        
+        return builder.makeHTTPRequest(
+            path: "\(baseAuthTokenPath)"
+            + "?client_id=\(accessKey)"
+            + "&&client_secret=\(secretKey)"
+            + "&&redirect_uri=\(redirectURI)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
-            baseURLString: Constants.baseURLString
+            baseURLString: defaultBaseURL
         )
     }
 }

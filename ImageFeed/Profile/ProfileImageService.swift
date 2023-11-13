@@ -42,6 +42,6 @@ final class ProfileImageService{
         urlBuilder.makeHTTPRequest(
             path: "/users/\(userName)",
             httpMethod: "GET",
-            baseURLString: Constants.defaultApiBaseURLString)
+            baseURLString: AuthConfiguration.standard.defaultApiBaseURLString)
     }
 }

@@ -5,6 +5,7 @@ import Foundation
 import Kingfisher
 
 final class ProfileViewController: UIViewController {
+    
 
     @IBAction private func didTapLogoutButton() {}
     private let profileImageService = ProfileImageService.shared
@@ -75,6 +76,7 @@ final class ProfileViewController: UIViewController {
             target: self,
             action: #selector(Self.didTapButton)
         )
+        button.accessibilityIdentifier = "logout button"
         button.tintColor = UIColor(named: "YP Red (iOS)")
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
